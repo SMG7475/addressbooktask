@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" type="text/css" href="index.css">
+        <script src="./jquery.js"></script>
+        <script src="./index.js" defer></script>
+    </head>
+    <body>
+        <div class="header">
+            <h1>Address Book</h1>
+        </div>
+        <div class="navbar-container">
+            <ul class="navbar-unlist">
+                <li><button id="home-button">HOME</button></li>
+                <li><button id="add-button">+ ADD</button></li>
+            </ul>
+            <img src="./blog-icon.png" class="blog-icon" />
+        </div>
+        <div class="contacts-form-details-container">
+            <div class="contacts-container">
+                <h2>Contacts</h2>
+                <ul id="contactsList">
+                </ul>
+            </div>
+            <div id="add-address-form-container">
+                <form>
+                    <div>
+                        <label for="name">Name</label>
+                    <input type="text" id="name"/>
+                </div>
+                <div>
+                    <label for="email">Email</label>
+                    <input type="email" id="email" />
+                </div>
+                <div class="mobile-landline-containers">
+                    <div>
+                        <label for="mobile">Mobile</label>
+                        <input type="number" id="mobile"/>
+                    </div>
+                    <div>
+                        <label for="landline">Landline</label>
+                        <input type="number" id="landline" />
+                    </div>
+                </div>
+                <div>
+                    <label for="website">Website</label>
+                    <input type="text" id="website"/>
+                </div>
+                <div>
+                    <label for="address">Address</label>
+                    <textarea id="address"  rows="8" cols="20"></textarea>
+                </div>
+                <button id="form-add-button" type="button">Add</button>
+                <div id="edit-add-btn-container"></div>
+            </form>
+        </div>
+        <div id="show-address-container"></div>
+    </div>
+    </body>
+</html>
