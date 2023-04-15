@@ -10,7 +10,13 @@ $(document).ready(function(){
             return parsedAddressBook;
         }
     }
-    let addressBook = getAddressBookFromLocalStorage();
+    var addressBook = getAddressBookFromLocalStorage();
+    function loadContacts(addressList){
+        for (address of addressBook){
+            createAndAppendAddrress(address)
+        }
+    }
+    loadContacts(addressBook)
     var contactsList = $("#contactsList")
     $("#add-button").click(function(){
         $("#show-address-container").html("")
@@ -31,25 +37,27 @@ $(document).ready(function(){
         let newLandline = $("#landline").val();
         let newWebsite = $("#website").val();
         let newAddress = $("#address").val();
+        let addressBook = getAddressBookFromLocalStorage();
         let newAddressToAdd = {
-        id : new Date().getTime(),
-        name:newName,
-        email:newEmail,
-        mobile: newMobile,
-        landline: newLandline,
-        website: newWebsite,
-        address: newAddress
-    }
-    addressBook.push(newAddressToAdd)   
-    localStorage.setItem("addressBook", JSON.stringify(addressBook));
-    createAndAppendAddrress(newAddressToAdd)
-    $("#name").val("");
-    $("#email").val("")
-    $("#mobile").val("")
-    $("#landline").val("")
-    $("#website").val("")
-    $("#address").val("")    
-    $("#add-address-form-container").css("display","none");
+            id : new Date().getTime(),
+            name:newName,
+            email:newEmail,
+            mobile: newMobile,
+            landline: newLandline,
+            website: newWebsite,
+            address: newAddress
+        }
+        addressBook.push(newAddressToAdd)   
+        localStorage.setItem("addressBook", JSON.stringify(addressBook));
+        createAndAppendAddrress(newAddressToAdd)
+        $("#name").val("");
+        $("#email").val("")
+        $("#mobile").val("")
+        $("#landline").val("")
+        $("#website").val("")
+        $("#address").val("")    
+        $("#add-address-form-container").css("display","none");
+        $("#show-address-container").css("display","block");
     })
     function createAndAppendAddrress(address){
         let {id, name, email,mobile} = address 
@@ -81,7 +89,7 @@ $(document).ready(function(){
             <p>Website: ${activeContact[0].website}</p>
             <p>Address: ${activeContact[0].address}</p>
         `)
-        $("#detele-address-button").on("click",function(){
+        $("#detele-address-button , #edit-address-button").on("click",function(){
             $("#show-address-container").html("")
             $('#contactsList li').css('background',"white")
             let deleteUpdatedAddressBook = addressBook.filter(function(address){
@@ -93,59 +101,22 @@ $(document).ready(function(){
                 createAndAppendAddrress(address)
             }
         })
-        // $("#edit-address-button").on("click",function(){
-        //     $("#show-address-container").css("display","none");
-        //     $("#add-address-form-container").css("display","block");
-        //     $("#form-add-button").css("display","none")
-        //     $("#edit-add-btn-container").html("");
-        //     $("#edit-add-btn-container").append(`<button id="edit-add-button" type="button">ADD</button>`);
-        //     let geteAddressToEdit = addressBook.filter(function(address){
-        //         return address.id == activeContactId
-        //     })
-        //     $("#name").val(geteAddressToEdit[0].name);
-        //     $("#email").val(geteAddressToEdit[0].email)
-        //     $("#mobile").val(geteAddressToEdit[0].mobile)
-        //     $("#landline").val(geteAddressToEdit[0].landline)
-        //     $("#website").val(geteAddressToEdit[0].website)
-        //     $("#address").val(geteAddressToEdit[0].address)
-        //     $("#edit-add-button").on("click",function(){
-        //         let editedName = $("#name").val();
-        //         let editedEmail = $("#email").val();
-        //         let editedMobile = $("#mobile").val();
-        //         let editedLandline = $("#landline").val();
-        //         let editedWebsite = $("#website").val();
-        //         let editedAddress = $("#address").val();
-        //         let editedAddressItem = {
-        //             id: geteAddressToEdit[0].id,
-        //             name: editedName,
-        //             email : editedEmail,
-        //             mobile : editedMobile,
-        //             landline : editedLandline,
-        //             website : editedWebsite,
-        //             address : editedAddress
-        //         }  
-        //         let filteredToEditAddressBookList = addressBook.filter(function(address){
-        //             return address.id != geteAddressToEdit[0].id
-        //         })
-        //         filteredToEditAddressBookList.push(editedAddressItem)
-        //         localStorage.setItem("addressBook",JSON.stringify(filteredToEditAddressBookList))
-        //         $("#contactsList").html("")
-        //         let updatedEditedAddresBook = JSON.parse(localStorage.getItem("addressBook"))
-        //         console.log(updatedEditedAddresBook)
-        //         for (address of updatedEditedAddresBook){
-        //             createAndAppendAddrress(address)
-        //         }
-        //         $('#contactsList li').css('background',"white")
-        //         $("#add-address-form-container").css("display","none")
-        //     })
-        // })
+        $("#edit-address-button").on("click",function(){
+            $("#show-address-container").css("display","none");
+            $("#add-address-form-container").css("display","block");
+            let geteAddressToEdit = addressBook.filter(function(address){
+                return address.id == activeContactId
+            })
+            console.log(geteAddressToEdit[0].id)
+            $("#name").val(geteAddressToEdit[0].name);
+            $("#email").val(geteAddressToEdit[0].email);
+            $("#mobile").val(geteAddressToEdit[0].mobile);
+            $("#landline").val(geteAddressToEdit[0].landline);
+            $("#website").val(geteAddressToEdit[0].website);
+            $("#address").val(geteAddressToEdit[0].address);
+        })
 
         
     })
-    function loadContacts(addressList){
-        for (address of addressBook){
-            createAndAppendAddrress(address)
-        }
-    }
-    loadContacts(addressBook)
+
 })
