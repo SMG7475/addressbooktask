@@ -1,6 +1,7 @@
 body{
     margin: 0;
-    font-family: arial;
+    font-family: verdana;
+    font-weight: 200;
 }
 .header{
     padding: 24px;
@@ -61,6 +62,9 @@ body{
     height: 40px;
     width: 600px;
 }
+#add-address-form-container > form > div > textarea {
+    width: 600px;
+}
 .mobile-landline-containers{
     display: flex;
     flex-direction: row  !important;
@@ -77,6 +81,7 @@ body{
 .contacts-form-details-container{
     padding: 0 32px 32px 32px 32px;
     display: flex;
+    font-family: century gothic;
 }
 .contacts-container > ul {
     list-style: none;
@@ -88,7 +93,13 @@ body{
     width: 500px;
     padding: 8px;
 }
-#form-add-button, #edit-add-button{
+.contacts-container > ul > li > h2 {
+    font-weight: 200;
+}
+.contacts-container > ul > li > p {
+    margin-left: 4px;
+}
+#form-add-button{
     align-self: flex-end;
     height: 46px;
     width: 160px;
@@ -103,7 +114,8 @@ body{
     padding: 32px;
 }
 #show-address-container > div > p , h2{
-    margin:  0;   
+    margin:  0; 
+    margin-bottom: 8px;  
 }
 .address-name-buttons-container{
     display: flex;

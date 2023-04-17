@@ -17,17 +17,15 @@ $(document).ready(function(){
         }
     }
     loadContacts(addressBook)
-    var contactsList = $("#contactsList")
     $("#add-button").click(function(){
         $("#show-address-container").html("")
-        $("#add-address-form-container").css("display","block")
+        $("#add-address-form-container").show();
         $('#contactsList li').css('background',"white")
-        $("#form-add-button").css("display","block")
     })
     $("#home-button").click(function(){
         $("#show-address-container").html("")
         $('#contactsList li').css('background',"white");
-        $("#add-address-form-container").css("display","none")
+        $("#add-address-form-container").hide();
     })
     $("#form-add-button").click(function(){
         $("#show-address-container").css("display","block");
@@ -56,8 +54,8 @@ $(document).ready(function(){
         $("#landline").val("")
         $("#website").val("")
         $("#address").val("")    
-        $("#add-address-form-container").css("display","none");
-        $("#show-address-container").css("display","block");
+        $("#add-address-form-container").hide();
+        $("#show-address-container").show();
     })
     function createAndAppendAddrress(address){
         let {id, name, email,mobile} = address 
@@ -65,10 +63,11 @@ $(document).ready(function(){
     }
     $("#contactsList").on('click' , 'li' , function(){
         $("#show-address-container").html("")
-        $("#show-address-container").css("display","block");
+        $("#show-address-container").show();
         $('#contactsList li').css('background',"white")
         $(this).css("background",'#cee7f2');
-        $("#add-address-form-container").css("display","none")
+        $("#add-address-form-container").hide()
+        var addressBook = getAddressBookFromLocalStorage();
         var activeContactId = $(this).attr("id")
         var activeContact = addressBook.filter(function(address){
             return address.id == activeContactId
@@ -81,13 +80,13 @@ $(document).ready(function(){
                    <button type="button" id="detele-address-button"><img src="./delete2.png" /><span>DELETE</span></button>
                </div>
             </div>
-            <p>Email: ${activeContact[0].email}</p>
+            <p>Email:  ${activeContact[0].email}</p>
             <div>
-               <p>Mobile: +91 ${activeContact[0].mobile}</p>
-               <p>Landline: ${activeContact[0].landline}</p>
+               <p>Mobile:  +91 ${activeContact[0].mobile}</p>
+               <p>Landline:  ${activeContact[0].landline}</p>
             </div>
-            <p>Website: ${activeContact[0].website}</p>
-            <p>Address: ${activeContact[0].address}</p>
+            <p>Website:  ${activeContact[0].website}</p>
+            <p>Address:  ${activeContact[0].address}</p>
         `)
         $("#detele-address-button , #edit-address-button").on("click",function(){
             $("#show-address-container").html("")
@@ -102,12 +101,11 @@ $(document).ready(function(){
             }
         })
         $("#edit-address-button").on("click",function(){
-            $("#show-address-container").css("display","none");
-            $("#add-address-form-container").css("display","block");
+            $("#show-address-container").hide();
+            $("#add-address-form-container").show();
             let geteAddressToEdit = addressBook.filter(function(address){
                 return address.id == activeContactId
             })
-            console.log(geteAddressToEdit[0].id)
             $("#name").val(geteAddressToEdit[0].name);
             $("#email").val(geteAddressToEdit[0].email);
             $("#mobile").val(geteAddressToEdit[0].mobile);
