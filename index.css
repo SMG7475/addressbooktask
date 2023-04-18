@@ -1,12 +1,13 @@
 body{
     margin: 0;
-    font-family: verdana;
+    font-family: century gothic;
     font-weight: 200;
 }
 .header{
     padding: 24px;
-    height: fit-content;
+    height: 130px;
     background-color: #3399cc; 
+    display: flex;
 }
 .header > h1 {
     font-size: 70px;
@@ -14,12 +15,13 @@ body{
     color: white;  
     font-weight: 100;
     background-color: #3399cc;  
+    align-self: center;
 }
 .navbar-container{
     background-color: black;
     color: white;
     margin: 0;
-    padding: 0 18px 0 18px;
+    padding: 0 16px 0 16px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -34,54 +36,70 @@ body{
     padding: 8px 16px 8px 16px;
     font-size: 28px;
     margin: 0;
+    font-weight: 600;
     color: white;
     background-color: transparent;
     border-style: none;
+    cursor: pointer;
 }
 .blog-icon{
     height: 32px;
 }
-#add-address-form-container{
+.add-address-form-container{
     display: none;
-    width: 770px;
-    height: 540px;
+    height: fit-content;
     margin: 32px;
     padding: 32px;
     box-shadow:  0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
 }
-#add-address-form-container > form > div , #add-address-form-container > form > div > div{
+.add-address-form-container > form >div >p , .add-address-form-container > form >div > div > p {
+    margin: 0;
+    color: red;
+    font-size: 14px;
+}
+.add-address-form-container > form > div , .add-address-form-container > form > div > div{
     display: flex;
     flex-direction: column;
     margin-bottom: 16px;
 }
-#add-address-form-container > form{
+.add-address-form-container > form{
     display: flex;
     flex-direction: column;
 }
-#add-address-form-container > form > div > input{
+.add-address-form-container > form > div > label,.add-address-form-container > form > div >div> label {
+    font-weight: bold;
+}
+.add-address-form-container > form > div > input{
+    font-size: 22px;
     height: 40px;
-    width: 600px;
+    width: 700px;
 }
-#add-address-form-container > form > div > textarea {
-    width: 600px;
+.add-address-form-container > form > div > textarea {
+    width: 700px;
+    font-size: 22px;
 }
-.mobile-landline-containers{
-    display: flex;
-    flex-direction: row  !important;
-    justify-content: space-between;
-    width: 610px;
-}
-.mobile-landline-containers > div >  input {
-    width: 280px;
+
+.mobile-landline-container > div >  input {
+    width: 320px;
     height: 40px;
+    font-size:22px ;
 }
 .contacts-container{
     margin: 32px;
 }
+.contacts-container > h2 {
+    margin: 0 0 32px 0;
+}
+.contacts-list-normal-items{
+    background-color: white;
+}
+.contacts-list-selected-items , .contacts-container > ul  :hover {
+    background-color: #cee7f2;
+    cursor: pointer;
+}
 .contacts-form-details-container{
     padding: 0 32px 32px 32px 32px;
     display: flex;
-    font-family: century gothic;
 }
 .contacts-container > ul {
     list-style: none;
@@ -94,12 +112,20 @@ body{
     padding: 8px;
 }
 .contacts-container > ul > li > h2 {
+    margin: 0 0 4px 0;
     font-weight: 200;
+    font-size: 28px;
 }
 .contacts-container > ul > li > p {
-    margin-left: 4px;
+    margin:0 0 0 4px;
 }
-#form-add-button{
+.form-buttons-container{
+    display: flex;
+    flex-direction: row !important;
+    justify-content: flex-end;
+    font-weight: 500;
+}
+.form-buttons-container > button {
     align-self: flex-end;
     height: 46px;
     width: 160px;
@@ -107,15 +133,32 @@ body{
     color: white;
     background-color: #468c00;
     border:none;
+    cursor: pointer;
+    margin: 8px;
 }
-#show-address-container{
+.form-close-button{
+    background-color: #D2042D !important;
+}
+.show-contact-details-container{
     width: 700px;
     margin: 32px 0 0 32px;
     padding: 32px;
 }
-#show-address-container > div > p , h2{
-    margin:  0; 
-    margin-bottom: 8px;  
+.show-contact-details-container > div {
+    margin: 0;
+}
+.show-contact-details-container > div >h2{
+    margin: 0;
+    font-size: 28px;
+    font-weight: 600;
+}
+.show-contact-details-container >  p {
+    font-size: 18px;
+    margin: 24px 0 24px 0;
+}
+.show-contact-details-container > div >  p {
+    margin: 0;
+    font-size: 18px;
 }
 .address-name-buttons-container{
     display: flex;
@@ -130,8 +173,15 @@ body{
     border: none;
     display: flex;
     align-items: center;
+    cursor: pointer;
 }
 .address-name-buttons-container > div > button > img{
     width: 16px;
     margin: 10px;
+}
+.mobile-landline-container{
+    display: flex;
+    flex-direction: row !important;
+    justify-content: space-between;
+    width: 700px;
 }

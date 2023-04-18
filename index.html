@@ -11,31 +11,33 @@
         </div>
         <div class="navbar-container">
             <ul class="navbar-unlist">
-                <li><button id="home-button">HOME</button></li>
-                <li><button id="add-button">+ ADD</button></li>
+                <li><button id="navbar-home-button">HOME</button></li>
+                <li><button id="navbar-add-button">+ ADD</button></li>
             </ul>
             <img src="./blog-icon.png" class="blog-icon" />
         </div>
         <div class="contacts-form-details-container">
             <div class="contacts-container">
-                <h2>Contacts</h2>
-                <ul id="contactsList">
+                <h2>CONTACTS</h2>
+                <ul id="contacts-list" class="contacts-list">
                 </ul>
             </div>
-            <div id="add-address-form-container">
+            <div id="add-address-form-container" class="add-address-form-container">
                 <form >
                     <div>
                         <label for="name">Name</label>
-                    <input type="text" id="name"/>
-                </div>
+                        <input type="text" id="name"/>
+                        <p id="name-errmsg"></p>
+                    </div>
                 <div>
                     <label for="email">Email</label>
                     <input type="email" id="email" />
                 </div>
-                <div class="mobile-landline-containers">
+                <div class="mobile-landline-container">
                     <div>
                         <label for="mobile">Mobile</label>
                         <input type="tel" id="mobile"/>
+                        <p id="mobile-errmsg"></p>
                     </div>
                     <div>
                         <label for="landline">Landline</label>
@@ -48,12 +50,31 @@
                 </div>
                 <div>
                     <label for="address">Address</label>
-                    <textarea id="address"  rows="8" cols="20"></textarea>
+                    <textarea id="address"  rows="5" cols="20"></textarea>
                 </div>
-                <button id="form-add-button" type="button">Add</button>
+                <div class="form-buttons-container">
+                    <button id="form-add-button" type="button" >Add</button>
+                    <button id="form-update-button" type="button">Update</button>
+                    <button id="form-close-button" class="form-close-button" type="button">Close</button>
+                </div>
             </form>
         </div>
-        <div id="show-address-container"></div>
+        <div id="show-contact-details-container" class="show-contact-details-container">
+            <div class="address-name-buttons-container">
+                <h2 id="show-name"></h2>
+                <div>
+                    <button type="button" id="edit-address-button"><img src="./edit1.jpg" /><span>EDIT</span></button>
+                    <button type="button" id="detele-address-button"><img src="./delete2.png" /><span>DELETE</span></button>
+                </div>
+             </div>
+             <p id="show-email"></p>
+             <div>
+                <p id="show-mobile"></p>
+                <p id="show-landline"></p>
+             </div>
+             <p id="show-website"></p>
+             <p id="show-address"></p>
+        </div>
     </div>
     </body>
 </html>
