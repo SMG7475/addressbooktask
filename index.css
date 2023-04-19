@@ -55,6 +55,7 @@ body{
 .add-address-form-container > form >div >p , .add-address-form-container > form >div > div > p {
     margin: 0;
     color: red;
+    display: none;
     font-size: 14px;
 }
 .add-address-form-container > form > div , .add-address-form-container > form > div > div{
