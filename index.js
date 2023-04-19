@@ -1,3 +1,4 @@
+var activeContact = null;
 function validateName() {
     let nameValue = $("#name").val();
     if (nameValue.length == 0) {
@@ -74,93 +75,258 @@ function validateAddress(){
     $("#address-errmsg").hide();
     return true
 }
-// function inputValidations(nameInput,emailInput,mobileInput,landlineInput,websiteInput,addressInput){
-//     let allInputsValid = true;
-//     if (nameInput.length == 0){
-//         $("#name-errmsg").show();
-//         allInputsValid = false;
-//     }
-//     if (emailInput.length == 0){
-//         $("#email-errmsg").show()
-//         allInputsValid = false;
-//     }
-// }
-$(document).ready(function () {
-    var activeContact = null;
-    // $("#name-errmsg").hide();
-    // $("#mobile-errmsg").hide();
-    // $("#email-errmsg").hide();
-    // $("#landline-errmsg").hide();
-    $("#show-contact-details-container").hide()
-    $("#form-add-button").on("click", function () {
-        let validName = validateName()
-        let validMobile = validateMobile()
-        let validEmail = validateEmail()
-        let validLandline = validateLandline()
-        let validWebsite = validateWebsite()
-        let validAddress = validateAddress()
-        if (validName && validMobile && validEmail && validLandline && validWebsite && validAddress) {
-            formAddButton()
-        }
-    })
-    $("#form-close-button").on("click", function () {
-        $("#add-address-form-container").hide();
-        toBlankInputs()
-        $('#contacts-list li').removeClass("contacts-list-selected-items")
-    })
-    function getAddressBookFromLocalStorage() {
-        let stringifiedAddressBook = localStorage.getItem("addressBook");
-        let parsedAddressBook = JSON.parse(stringifiedAddressBook);
-        if (parsedAddressBook === null) {
-            return [];
-        } else {
-            return parsedAddressBook;
-        }
+function inputValidations(){
+    let inputId = event.target.id;
+    let inputValue = event.target.value;
+    //console.log(inputId,inputValue)
+    switch (inputId){
+        case "name":
+            if (inputValue.length == 0) {
+                $("#name-errmsg").show();
+                $("#name-errmsg").html("*Name is required")
+                return false;
+            }
+            else if (inputValue.length < 3 || inputValue.length > 50) {
+                $("#name-errmsg").show();
+                $("#name-errmsg").html("*length of username must be greater than 3 characters");
+                return false;
+            }
+            else {
+                $("#name-errmsg").hide();
+                return true
+            }
+        case "email":
+            if (inputValue.length == 0){
+                $("#email-errmsg").show();
+                return false
+            }
+            else if (inputValue.includes("@") == false){
+                $("#email-errmsg").show();
+                $("#email-errmsg").html("*Enter a Valid Email")
+                return false
+            }
+            else {
+                $("#email-errmsg").hide();
+                return true
+            }
+        case "mobile":
+            if (inputValue.length == 0) {
+                $("#mobile-errmsg").show()
+                $("#mobile-errmsg").html("*Mobile Number is required")
+                return false
+            }
+            else if (inputValue.length != 10) {
+                $("#mobile-errmsg").show();
+                $("#mobile-errmsg").html("*Enter a valid Mobile Number");
+                return false
+            }
+            else {
+                $("#mobile-errmsg").hide();
+                return true
+            }
+        case "landline":
+            if (inputValue.length == 0) {
+                $("#landline-errmsg").show();
+                return false
+            }
+            $("#landline-errmsg").hide();
+            return true
+        case "website":
+            if (inputValue.length == 0){
+                $("#website-errmsg").show();
+                return false
+            }
+            $("#website-errmsg").hide();
+            return true
+        case "address":
+            if (inputValue.length == 0){
+                $("#address-errmsg").show();
+                return false
+            }
+            $("#address-errmsg").hide();
+            return true
+
+    }    
+
+}
+function getAddressBookFromLocalStorage() {
+    let stringifiedAddressBook = localStorage.getItem("addressBook");
+    let parsedAddressBook = JSON.parse(stringifiedAddressBook);
+    if (parsedAddressBook === null) {
+        return [];
+    } else {
+        return parsedAddressBook;
     }
+}
+function createAndAppendAddrress(address) {
+    $("#contacts-list").append(`<li id="${address.id}"><h2>${address.name}</h2><p>${address.email}</p><p>+91 ${address.mobile}</p></li>`)
+}
+function toDeleteContact() {
+    //console.log(activeContact)
+    $("#show-contact-details-container").hide();
+    $('#contacts-list li').removeClass("contacts-list-selected-items")
+    let addressBook = getAddressBookFromLocalStorage();
+    let deleteUpdatedAddressBook = addressBook.filter(function (address) {
+        return address.id != activeContact.id
+    })
+    //console.log(deleteUpdatedAddressBook)
+    localStorage.setItem("addressBook", JSON.stringify(deleteUpdatedAddressBook));
+    $("#contacts-list").html("")
+    deleteUpdatedAddressBook.map(createAndAppendAddrress)
+}
+function closeForm() {
+    $("#add-address-form-container").hide();
+    toBlankInputs()
+    $('#contacts-list li').removeClass("contacts-list-selected-items")
+}
+function toBlankInputs() {
+    $("#name").val("");
+    $("#email").val("")
+    $("#mobile").val("")
+    $("#landline").val("")
+    $("#website").val("")
+    $("#address").val("")
+}
+function onAddNavbar() {
+    $("#show-contact-details-container").hide()
+    toBlankInputs()
+    $("#form-add-button").show();
+    $("#form-update-button").hide()
+    $("#add-address-form-container").show();
+    $('#contacts-list li').removeClass("contacts-list-selected-items")
+}
+function onHomeNavbar() {
+    $("#show-contact-details-container").hide()
+    $('#contacts-list li').removeClass("contacts-list-selected-items")
+    $("#add-address-form-container").hide();
+}
+function onUpdateContact() {
+    let addressBook = getAddressBookFromLocalStorage();
+    let editedAddressBook = addressBook.map(function (contact) {
+        if (contact.id == activeContact.id) {
+            return {
+                id: contact.id,
+                name: $("#name").val(),
+                email: $("#email").val(),
+                mobile: $("#mobile").val(),
+                landline: $("#landline").val(),
+                website: $("#website").val(),
+                address: $("#address").val(),
+            }
+        }
+        return contact
+    })
+    localStorage.setItem("addressBook", JSON.stringify(editedAddressBook));
+    $("#add-address-form-container").hide();
+    $("#contacts-list").html("");
+    editedAddressBook.map(createAndAppendAddrress)
+}
+function formAddButton() {
+    $("#show-contact-details-container").show();
+    let newName = $("#name").val();
+    let newEmail = $("#email").val();
+    let newMobile = $("#mobile").val();
+    let newLandline = $("#landline").val();
+    let newWebsite = $("#website").val();
+    let newAddress = $("#address").val();
+    let addressBook = getAddressBookFromLocalStorage();
+    let newAddressToAdd = {
+        id: new Date().getTime(),
+        name: newName,
+        email: newEmail,
+        mobile: newMobile,
+        landline: newLandline,
+        website: newWebsite,
+        address: newAddress
+    }
+    addressBook.push(newAddressToAdd)
+    localStorage.setItem("addressBook", JSON.stringify(addressBook));
+    createAndAppendAddrress(newAddressToAdd)
+    toBlankInputs()
+    $("#add-address-form-container").hide();
+    $("#show-contact-details-container").hide();
+}
+function onAddContact() {
+    let validName = validateName()
+    let validMobile = validateMobile()
+    let validEmail = validateEmail()
+    let validLandline = validateLandline()
+    let validWebsite = validateWebsite()
+    let validAddress = validateAddress()
+    if (validName && validMobile && validEmail && validLandline && validWebsite && validAddress) {
+        formAddButton()
+    }
+}
+function onEdit() {
+    $("#form-add-button").hide();
+    $("#form-update-button").show();
+    $("#show-contact-details-container").hide();
+    $("#add-address-form-container").show();
+    $("#name").val(activeContact.name);
+    $("#email").val(activeContact.email);
+    $("#mobile").val(activeContact.mobile);
+    $("#landline").val(activeContact.landline);
+    $("#website").val(activeContact.website);
+    $("#address").val(activeContact.address);
+}
+$(document).ready(function () {
+    $("#show-contact-details-container").hide()
+    // $("#form-add-button").on("click", function onAddContact() {
+    //     let validName = validateName()
+    //     let validMobile = validateMobile()
+    //     let validEmail = validateEmail()
+    //     let validLandline = validateLandline()
+    //     let validWebsite = validateWebsite()
+    //     let validAddress = validateAddress()
+    //     if (validName && validMobile && validEmail && validLandline && validWebsite && validAddress) {
+    //         formAddButton()
+    //     }
+    // })
+    // $("#form-close-button").on("click", function () {
+    //     $("#add-address-form-container").hide();
+    //     toBlankInputs()
+    //     $('#contacts-list li').removeClass("contacts-list-selected-items")
+    // })
     var addressBook = getAddressBookFromLocalStorage();
     addressBook.map(createAndAppendAddrress)
-    $("#navbar-add-button").click(function () {
-        $("#show-contact-details-container").hide()
-        toBlankInputs()
-        $("#form-add-button").show();
-        $("#form-update-button").hide()
-        $("#add-address-form-container").show();
-        $('#contacts-list li').removeClass("contacts-list-selected-items")
-    })
-    $("#navbar-home-button").click(function () {
-        $("#show-contact-details-container").hide()
-        $('#contacts-list li').removeClass("contacts-list-selected-items")
-        $("#add-address-form-container").hide();
-    })
-    function formAddButton() {
-        $("#show-contact-details-container").show();
-        let newName = $("#name").val();
-        let newEmail = $("#email").val();
-        let newMobile = $("#mobile").val();
-        let newLandline = $("#landline").val();
-        let newWebsite = $("#website").val();
-        let newAddress = $("#address").val();
-        let addressBook = getAddressBookFromLocalStorage();
-        let newAddressToAdd = {
-            id: new Date().getTime(),
-            name: newName,
-            email: newEmail,
-            mobile: newMobile,
-            landline: newLandline,
-            website: newWebsite,
-            address: newAddress
-        }
-        addressBook.push(newAddressToAdd)
-        localStorage.setItem("addressBook", JSON.stringify(addressBook));
-        createAndAppendAddrress(newAddressToAdd)
-        toBlankInputs()
-        $("#add-address-form-container").hide();
-        $("#show-contact-details-container").hide();
-    }
-    function createAndAppendAddrress(address) {
-        let { id, name, email, mobile } = address
-        $("#contacts-list").append(`<li id="${id}"><h2>${name}</h2><p>${email}</p><p>+91 ${mobile}</p></li>`)
-    }
+    // $("#navbar-add-button").click(function () {
+    //     $("#show-contact-details-container").hide()
+    //     toBlankInputs()
+    //     $("#form-add-button").show();
+    //     $("#form-update-button").hide()
+    //     $("#add-address-form-container").show();
+    //     $('#contacts-list li').removeClass("contacts-list-selected-items")
+    // })
+    // $("#navbar-home-button").click(function onHomeNavbar() {
+    //     $("#show-contact-details-container").hide()
+    //     $('#contacts-list li').removeClass("contacts-list-selected-items")
+    //     $("#add-address-form-container").hide();
+    // })
+    // function formAddButton() {
+    //     $("#show-contact-details-container").show();
+    //     let newName = $("#name").val();
+    //     let newEmail = $("#email").val();
+    //     let newMobile = $("#mobile").val();
+    //     let newLandline = $("#landline").val();
+    //     let newWebsite = $("#website").val();
+    //     let newAddress = $("#address").val();
+    //     let addressBook = getAddressBookFromLocalStorage();
+    //     let newAddressToAdd = {
+    //         id: new Date().getTime(),
+    //         name: newName,
+    //         email: newEmail,
+    //         mobile: newMobile,
+    //         landline: newLandline,
+    //         website: newWebsite,
+    //         address: newAddress
+    //     }
+    //     addressBook.push(newAddressToAdd)
+    //     localStorage.setItem("addressBook", JSON.stringify(addressBook));
+    //     createAndAppendAddrress(newAddressToAdd)
+    //     toBlankInputs()
+    //     $("#add-address-form-container").hide();
+    //     $("#show-contact-details-container").hide();
+    // }
     $("#contacts-list").on('click', 'li', function () {
         $("#show-contact-details-container").show();
         $('#contacts-list li').addClass("contacts-list-normal-items")
@@ -169,72 +335,58 @@ $(document).ready(function () {
         $("#add-address-form-container").hide()
         var addressBook = getAddressBookFromLocalStorage();
         var activeContactId = $(this).attr("id")
-        activeContact = addressBook.filter(function (address) {
+        let activeContactlist = addressBook.filter(function (address) {
             return address.id == activeContactId
         })
-        $("#show-name").html(`${activeContact[0].name}`)
-        $("#show-email").html(`Email: ${activeContact[0].email}`)
-        $("#show-mobile").html(`Mobile: ${activeContact[0].mobile}`)
-        $("#show-landline").html(`Landline: ${activeContact[0].landline}`)
-        $("#show-website").html(`Website: ${activeContact[0].website}`)
-        $("#show-address").html(`Address: ${activeContact[0].address}`)
+        activeContact =activeContactlist[0]
+        $("#show-name").html(`${activeContact.name}`)
+        $("#show-email").html(`Email: ${activeContact.email}`)
+        $("#show-mobile").html(`Mobile: ${activeContact.mobile}`)
+        $("#show-landline").html(`Landline: ${activeContact.landline}`)
+        $("#show-website").html(`Website: ${activeContact.website}`)
+        $("#show-address").html(`Address: ${activeContact.address}`)
     })
-    $("#edit-address-button").on("click", function () {
-        $("#form-add-button").hide();
-        $("#form-update-button").show();
-        $("#show-contact-details-container").hide();
-        $("#add-address-form-container").show();
-        let geteAddressToEdit = addressBook.filter(function (address) {
-            return address.id == activeContact[0].id
-        })
-        $("#name").val(activeContact[0].name);
-        $("#email").val(activeContact[0].email);
-        $("#mobile").val(activeContact[0].mobile);
-        $("#landline").val(activeContact[0].landline);
-        $("#website").val(activeContact[0].website);
-        $("#address").val(activeContact[0].address);
-    })
-    $("#form-update-button").on("click", function () {
-        let addressBook = getAddressBookFromLocalStorage();
-        let editedAddressBook = addressBook.map(function (contact) {
-            if (contact.id == activeContact[0].id) {
-                return {
-                    id: contact.id,
-                    name: $("#name").val(),
-                    email: $("#email").val(),
-                    mobile: $("#mobile").val(),
-                    landline: $("#landline").val(),
-                    website: $("#website").val(),
-                    address: $("#address").val(),
-                }
-            }
-            return contact
-        })
-        localStorage.setItem("addressBook", JSON.stringify(editedAddressBook));
-        $("#add-address-form-container").hide();
-        $("#contacts-list").html("");
-        editedAddressBook.map(createAndAppendAddrress)
-    })
-    $("#detele-address-button").on("click", function () {
-        $("#show-contact-details-container").hide();
-        $('#contacts-list li').removeClass("contacts-list-selected-items")
-        let addressBook = getAddressBookFromLocalStorage();
-        let deleteUpdatedAddressBook = addressBook.filter(function (address) {
-            return address.id != activeContact[0].id
-        })
-        console.log(deleteUpdatedAddressBook)
-        localStorage.setItem("addressBook", JSON.stringify(deleteUpdatedAddressBook));
-        $("#contacts-list").html("")
-        deleteUpdatedAddressBook.map(createAndAppendAddrress)
-    })
-    function toBlankInputs() {
-        $("#name").val("");
-        $("#email").val("")
-        $("#mobile").val("")
-        $("#landline").val("")
-        $("#website").val("")
-        $("#address").val("")
-    }
+    // $("#edit-address-button").on("click", function onEdit() {
+    //     $("#form-add-button").hide();
+    //     $("#form-update-button").show();
+    //     $("#show-contact-details-container").hide();
+    //     $("#add-address-form-container").show();
+    //     $("#name").val(activeContact.name);
+    //     $("#email").val(activeContact.email);
+    //     $("#mobile").val(activeContact.mobile);
+    //     $("#landline").val(activeContact.landline);
+    //     $("#website").val(activeContact.website);
+    //     $("#address").val(activeContact.address);
+    // })
+    // $("#form-update-button").on("click", function onUpdateContact() {
+    //     let addressBook = getAddressBookFromLocalStorage();
+    //     let editedAddressBook = addressBook.map(function (contact) {
+    //         if (contact.id == activeContact.id) {
+    //             return {
+    //                 id: contact.id,
+    //                 name: $("#name").val(),
+    //                 email: $("#email").val(),
+    //                 mobile: $("#mobile").val(),
+    //                 landline: $("#landline").val(),
+    //                 website: $("#website").val(),
+    //                 address: $("#address").val(),
+    //             }
+    //         }
+    //         return contact
+    //     })
+    //     localStorage.setItem("addressBook", JSON.stringify(editedAddressBook));
+    //     $("#add-address-form-container").hide();
+    //     $("#contacts-list").html("");
+    //     editedAddressBook.map(createAndAppendAddrress)
+    // })
+    // function toBlankInputs() {
+    //     $("#name").val("");
+    //     $("#email").val("")
+    //     $("#mobile").val("")
+    //     $("#landline").val("")
+    //     $("#website").val("")
+    //     $("#address").val("")
+    // }
 
 })
  

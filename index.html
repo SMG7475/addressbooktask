@@ -11,8 +11,8 @@
         </div>
         <div class="navbar-container">
             <ul class="navbar-unlist">
-                <li><button id="navbar-home-button">HOME</button></li>
-                <li><button id="navbar-add-button">+ ADD</button></li>
+                <li><button id="navbar-home-button" onclick="onHomeNavbar()">HOME</button></li>
+                <li><button id="navbar-add-button" onclick="onAddNavbar()">+ ADD</button></li>
             </ul>
             <img src="./blog-icon.png" class="blog-icon" />
         </div>
@@ -26,40 +26,40 @@
                 <form >
                     <div>
                         <label for="name">Name</label>
-                        <input type="text" id="name" onblur="validateName()"/>
+                        <input type="text" id="name" onblur="inputValidations()"/>
                         <p id="name-errmsg">*Name is required</p>
                     </div>
                 <div>
                     <label for="email">Email</label>
-                    <input type="email" id="email" onblur="validateEmail()" />
+                    <input type="email" id="email" onblur="inputValidations()" />
                     <p id="email-errmsg">*Email is required</p>
                 </div>
                 <div class="mobile-landline-container">
                     <div>
                         <label for="mobile">Mobile</label>
-                        <input type="tel" id="mobile" onblur="validateMobile()"/>
+                        <input type="tel" id="mobile" onblur="inputValidations()"/>
                         <p id="mobile-errmsg">*Mobile num is required</p>
                     </div>
                     <div>
                         <label for="landline">Landline</label>
-                        <input type="tel" id="landline" onblur="validateLandline()"/>
+                        <input type="tel" id="landline" onblur="inputValidations()"/>
                         <p id="landline-errmsg">*Landline num is required</p>
                     </div>
                 </div>
                 <div>
                     <label for="website">Website</label>
-                    <input type="url" id="website" onblur="validateWebsite()"/>
+                    <input type="url" id="website" onblur="inputValidations()"/>
                     <p id="website-errmsg">*Website url is required</p>
                 </div>
                 <div>
                     <label for="address">Address</label>
-                    <textarea id="address"  rows="5" cols="20" onblur="validateAddress()"></textarea>
+                    <textarea id="address"  rows="5" cols="20" onblur="inputValidations()"></textarea>
                     <p id="address-errmsg">*Address is required</p>
                 </div>
                 <div class="form-buttons-container">
-                    <button id="form-add-button" type="button" >Add</button>
-                    <button id="form-update-button" type="button">Update</button>
-                    <button id="form-close-button" class="form-close-button" type="button">Close</button>
+                    <button id="form-add-button" type="button" onclick="onAddContact()">Add</button>
+                    <button id="form-update-button" type="button" onclick="onUpdateContact()">Update</button>
+                    <button id="form-close-button" class="form-close-button" type="button" onclick="closeForm()">Close</button>
                 </div>
             </form>
         </div>
@@ -67,8 +67,8 @@
             <div class="address-name-buttons-container">
                 <h2 id="show-name"></h2>
                 <div>
-                    <button type="button" id="edit-address-button"><img src="./edit1.jpg" /><span>EDIT</span></button>
-                    <button type="button" id="detele-address-button"><img src="./delete2.png" /><span>DELETE</span></button>
+                    <button type="button" id="edit-address-button" onclick="onEdit()"><img src="./edit1.jpg" /><span>EDIT</span></button>
+                    <button type="button" id="detele-address-button" onclick="toDeleteContact()"><img src="./delete2.png" /><span>DELETE</span></button>
                 </div>
              </div>
              <p id="show-email"></p>
