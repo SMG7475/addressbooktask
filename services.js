@@ -1,3 +1,8 @@
+// class Services{
+//     myMethod() {
+//         console.log('Hello, world!');
+//       }
+// }
 function getAddressBookFromLocalStorage() {
     let stringifiedAddressBook = localStorage.getItem("addressBook");
     let parsedAddressBook = JSON.parse(stringifiedAddressBook);
@@ -17,7 +22,7 @@ function getSpecificObject(id) {
 function deleteContact(id) {
     let addressBook = getAddressBookFromLocalStorage();
     let deleteUpdatedAddressBook = addressBook.filter(function (address) {
-        return address.id != activeContact.id
+        return address.id != id
     })
     localStorage.setItem("addressBook", JSON.stringify(deleteUpdatedAddressBook));
     return deleteUpdatedAddressBook
@@ -27,22 +32,13 @@ function addContact(contact){
     addressBook.push(contact)
     localStorage.setItem("addressBook", JSON.stringify(addressBook));
 }
-function updateContact(id){
+function updateContact(contact){
     let addressBook = getAddressBookFromLocalStorage();
-    console.log(id,"yes")
-    let editedAddressBook = addressBook.map(function (contact) {
-        if (contact.id == id) {
-            return {
-                id: contact.id,
-                name: $("#name").val(),
-                email: $("#email").val(),
-                mobile: $("#mobile").val(),
-                landline: $("#landline").val(),
-                website: $("#website").val(),
-                address: $("#address").val(),
-            }
+    let editedAddressBook = addressBook.map(function (address) {
+        if (address.id == contact.id) {
+            return contact
         }
-        return contact
+        return address
     })
     localStorage.setItem("addressBook", JSON.stringify(editedAddressBook));
     return editedAddressBook
