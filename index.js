@@ -19,14 +19,13 @@ function onAddValidateInputs() {
 }
 
 function inputValidations(id, value) {
-    //console.log(event)
     let inputId = id;
     let inputValue = value;
     if (id == undefined && value == undefined) {
         inputId = event.target.id;
         inputValue = event.target.value;
     }
-    isvalidInput = false
+    isvalidInput = true
     switch (inputId) {
         case "name":
             const nameRegex = /^[a-zA-Z]+$/
@@ -38,21 +37,15 @@ function inputValidations(id, value) {
                 $(`#name-errmsg`).html("*Enter a Valid Name");
                 isvalidInput =  false
             }
-            else {
-                isvalidInput =  true
-            }
             break;
         case "email":
             const emailRegex = /^\w+@[a-zA-Z_]+\.[a-zA-Z]{2,3}$/
             if (inputValue.length == 0) {
                 isvalidInput =  false;
             }
-            if (!emailRegex.test(inputValue)) {
+            else if (!emailRegex.test(inputValue)) {
                 $("#email-errmsg").html("*Enter a Valid Email")
                 isvalidInput =  false;
-            }
-            else {
-                isvalidInput =  true
             }
             break;
         case "mobile":
@@ -64,16 +57,10 @@ function inputValidations(id, value) {
                 $("#mobile-errmsg").html("*Enter a valid Mobile Number");
                 isvalidInput =  false;
             }
-            else {
-                isvalidInput =  true
-            }
             break;
         case "landline":
             if (inputValue.length == 0) {
                 isvalidInput =  false;
-            }
-            else {
-                isvalidInput =  true
             }
             break;
         case "website":
@@ -85,22 +72,14 @@ function inputValidations(id, value) {
                 $("#website-errmsg").html("Enter a Valid URL")
                 isvalidInput =  false;
             }
-            else {
-                isvalidInput =  true
-            }
             break;
         case "address":
             if (inputValue.length == 0) {
                 isvalidInput =  false;
             }
-            else {
-                isvalidInput =  true
-            }
             break;
 
-
     }
-    //console.log(isvalidInput)
     isvalidInput ? $(`#${inputId}-errmsg`).hide() : $(`#${inputId}-errmsg`).show()
     return isvalidInput
 
