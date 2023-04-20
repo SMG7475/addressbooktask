@@ -12,96 +12,97 @@ function onAddValidateInputs() {
         if (onBtnId == "form-add-button") {
             formAddButton()
         }
-        else if (onBtnId == "form-update-button"){
+        else if (onBtnId == "form-update-button") {
             onUpdateContact()
         }
     }
 }
 
 function inputValidations(id, value) {
-    console.log(event)
+    //console.log(event)
     let inputId = id;
     let inputValue = value;
-    if (id == undefined && value == undefined ) {
+    if (id == undefined && value == undefined) {
         inputId = event.target.id;
         inputValue = event.target.value;
     }
+    isvalidInput = false
     switch (inputId) {
         case "name":
             const nameRegex = /^[a-zA-Z]+$/
             if (inputValue.length == 0) {
-                $("#name-errmsg").show();
                 $("#name-errmsg").html("*Name is required")
-                return false;
+                isvalidInput =  false;
             }
-            else if (!nameRegex.test(inputValue)){
+            else if (!nameRegex.test(inputValue)) {
                 $(`#name-errmsg`).html("*Enter a Valid Name");
-                $(`#name-errmsg`).show();
-                return false
+                isvalidInput =  false
             }
             else {
-                $("#name-errmsg").hide();
-                return true
+                isvalidInput =  true
             }
+            break;
         case "email":
             const emailRegex = /^\w+@[a-zA-Z_]+\.[a-zA-Z]{2,3}$/
             if (inputValue.length == 0) {
-                $("#email-errmsg").show();
-                return false
+                isvalidInput =  false;
             }
             if (!emailRegex.test(inputValue)) {
-                $("#email-errmsg").show();
                 $("#email-errmsg").html("*Enter a Valid Email")
-                return false
+                isvalidInput =  false;
             }
             else {
-                $("#email-errmsg").hide();
-                return true
+                isvalidInput =  true
             }
+            break;
         case "mobile":
             if (inputValue.length == 0) {
-                $("#mobile-errmsg").show()
                 $("#mobile-errmsg").html("*Mobile Number is required")
-                return false
+                isvalidInput =  false;
             }
             else if (inputValue.length != 10) {
-                $("#mobile-errmsg").show();
                 $("#mobile-errmsg").html("*Enter a valid Mobile Number");
-                return false
+                isvalidInput =  false;
             }
             else {
-                $("#mobile-errmsg").hide();
-                return true
+                isvalidInput =  true
             }
+            break;
         case "landline":
             if (inputValue.length == 0) {
-                $("#landline-errmsg").show();
-                return false
+                isvalidInput =  false;
             }
-            $("#landline-errmsg").hide();
-            return true
+            else {
+                isvalidInput =  true
+            }
+            break;
         case "website":
             const websiteRegex = /\bhttps?:/
             if (inputValue.length == 0) {
-                $("#website-errmsg").show();
-                return false
+                isvalidInput =  false;
             }
             else if (!websiteRegex.test(inputValue)) {
-                $("#website-errmsg").show();
                 $("#website-errmsg").html("Enter a Valid URL")
-                return false
+                isvalidInput =  false;
             }
-            $("#website-errmsg").hide();
-            return true
+            else {
+                isvalidInput =  true
+            }
+            break;
         case "address":
             if (inputValue.length == 0) {
-                $("#address-errmsg").show();
-                return false
+                isvalidInput =  false;
             }
-            $("#address-errmsg").hide();
-            return true
+            else {
+                isvalidInput =  true
+            }
+            break;
+
 
     }
+    //console.log(isvalidInput)
+    isvalidInput ? $(`#${inputId}-errmsg`).hide() : $(`#${inputId}-errmsg`).show()
+    return isvalidInput
 
 }
 function createAndAppendAddrress(address) {
