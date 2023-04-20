@@ -1,32 +1,5 @@
 const myServices = new Services();
 var activeContact = null;
-// function validateLandline() {
-//     let landlineValue = $("#landline").val();
-//     if (landlineValue.length == 0) {
-//         $("#landline-errmsg").show();
-//         return false
-//     }
-//     $("#landline-errmsg").hide();
-//     return true
-// }
-// function validateWebsite() {
-//     let websiteValue = $("#website").val();
-//     if (websiteValue.length == 0) {
-//         $("#website-errmsg").show();
-//         return false
-//     }
-//     $("#website-errmsg").hide();
-//     return true
-// }
-// function validateAddress() {
-//     let addressValue = $("#address").val();
-//     if (addressValue.length == 0) {
-//         $("#address-errmsg").show();
-//         return false
-//     }
-//     $("#address-errmsg").hide();
-//     return true
-// }
 function onAddValidateInputs() {
     let onBtnId = event.target.id;
     let validName = inputValidations("name", $("#name").val());
@@ -46,33 +19,39 @@ function onAddValidateInputs() {
 }
 
 function inputValidations(id, value) {
+    console.log(event)
     let inputId = id;
     let inputValue = value;
-    if (id == undefined && value == undefined) {
+    if (id == undefined && value == undefined ) {
         inputId = event.target.id;
         inputValue = event.target.value;
     }
     switch (inputId) {
         case "name":
+            const nameRegex = /^[a-zA-Z]+$/
             if (inputValue.length == 0) {
                 $("#name-errmsg").show();
                 $("#name-errmsg").html("*Name is required")
                 return false;
+            }
+            else if (!nameRegex.test(inputValue)){
+                $(`#name-errmsg`).html("*Enter a Valid Name");
+                $(`#name-errmsg`).show();
+                return false
             }
             else {
                 $("#name-errmsg").hide();
                 return true
             }
         case "email":
-            const emailRegex = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/
-            let emailValue = $("#email").val();
-            if (emailValue.length == 0) {
+            const emailRegex = /^\w+@[a-zA-Z_]+\.[a-zA-Z]{2,3}$/
+            if (inputValue.length == 0) {
                 $("#email-errmsg").show();
                 return false
             }
-            if (!emailRegex.test(emailValue)) {
+            if (!emailRegex.test(inputValue)) {
                 $("#email-errmsg").show();
-                $("#email-errmsg").html("Enter a Valid Email")
+                $("#email-errmsg").html("*Enter a Valid Email")
                 return false
             }
             else {
@@ -102,8 +81,14 @@ function inputValidations(id, value) {
             $("#landline-errmsg").hide();
             return true
         case "website":
+            const websiteRegex = /\bhttps?:/
             if (inputValue.length == 0) {
                 $("#website-errmsg").show();
+                return false
+            }
+            else if (!websiteRegex.test(inputValue)) {
+                $("#website-errmsg").show();
+                $("#website-errmsg").html("Enter a Valid URL")
                 return false
             }
             $("#website-errmsg").hide();

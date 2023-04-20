@@ -7,7 +7,8 @@ class Services {
         } else {
             return parsedAddressBook;
         }
-    } getSpecificObject(id) {
+    } 
+    getSpecificObject(id) {
         let addressBook = this.getAddressBookFromLocalStorage();
         let getSpecificContact = addressBook.filter(function (address) {
             return address.id == id
@@ -26,7 +27,8 @@ class Services {
         let addressBook = this.getAddressBookFromLocalStorage();
         addressBook.push(contact)
         localStorage.setItem("addressBook", JSON.stringify(addressBook));
-    } updateContact(contact) {
+    }
+    updateContact(contact) {
         let addressBook = this.getAddressBookFromLocalStorage();
         let editedAddressBook = addressBook.map(function (address) {
             if (address.id == contact.id) {
