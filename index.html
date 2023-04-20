@@ -2,9 +2,10 @@
 <html>
     <head>
         <link rel="stylesheet" type="text/css" href="index.css">
+        <script src="./services.js"></script>
         <script src="./jquery.js" type="text/javascript"></script>
         <script src="./index.js" ></script>
-        <script src="./services.js"></script>
+       
     </head>
     <body>
         <div class="header">
@@ -27,39 +28,39 @@
                 <form >
                     <div>
                         <label for="name">Name</label>
-                        <input type="text" id="name" />
+                        <input type="text" id="name" onblur="inputValidations()"/>
                         <p id="name-errmsg">*Name is required</p>
                     </div>
                 <div>
                     <label for="email">Email</label>
-                    <input type="email" id="email" />
+                    <input type="email" id="email" onblur="inputValidations()"/>
                     <p id="email-errmsg">*Email is required</p>
                 </div>
                 <div class="mobile-landline-container">
                     <div>
                         <label for="mobile">Mobile</label>
-                        <input type="number" id="mobile" />
+                        <input type="number" id="mobile"onblur="inputValidations()"/>
                         <p id="mobile-errmsg">*Mobile num is required</p>
                     </div>
                     <div>
                         <label for="landline">Landline</label>
-                        <input type="number" id="landline"/>
+                        <input type="number" id="landline" onblur="inputValidations()"/>
                         <p id="landline-errmsg">*Landline num is required</p>
                     </div>
                 </div>
                 <div>
                     <label for="website">Website</label>
-                    <input type="url" id="website"/>
+                    <input type="url" id="website" onblur="inputValidations()"/>
                     <p id="website-errmsg">*Website url is required</p>
                 </div>
                 <div>
                     <label for="address">Address</label>
-                    <textarea id="address"  rows="5" cols="20"></textarea>
+                    <textarea id="address"  rows="5" cols="20" onblur="inputValidations()"></textarea>
                     <p id="address-errmsg">*Address is required</p>
                 </div>
                 <div class="form-buttons-container">
-                    <button id="form-add-button" type="button" onclick="onAddContact()">Add</button>
-                    <button id="form-update-button" type="button" onclick="onUpdateContact()">Update</button>
+                    <button id="form-add-button" type="button" onclick="onAddValidateInputs()">Add</button>
+                    <button id="form-update-button" type="button" onclick="onAddValidateInputs()">Update</button>
                     <button id="form-close-button" class="form-close-button" type="button" onclick="closeForm()">Close</button>
                 </div>
             </form>
