@@ -33,5 +33,6 @@ class Services {
             })
             localStorage.setItem("addressBook", JSON.stringify(editedAddressBook));
         }
+        return true
     }
 }
