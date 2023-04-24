@@ -36,7 +36,3 @@ class Services {
         return true
     }
 }
-let t = `!`;
-if (t){
-    console.log("yes")
-}
