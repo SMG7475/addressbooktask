@@ -37,11 +37,10 @@ class Services {
             return address
         })
         localStorage.setItem("addressBook", JSON.stringify(editedAddressBook));
-        return editedAddressBook
+        return true
     }
 }
-
-
-
-
-
+let t = `!`;
+if (t){
+    console.log("yes")
+}

@@ -1,5 +1,6 @@
 const myServices = new Services();
-var activeContact = null;
+var activeContact;
+var fromEditAdd = false;
 function onAddValidateInputs() {
     let onBtnId = event.target.id;
     let validName = inputValidations("name", $("#name").val());
@@ -9,12 +10,7 @@ function onAddValidateInputs() {
     let validWebsite = inputValidations("website", $("#website").val());
     let validAddress = inputValidations("address", $("#address").val());
     if (validName && validMobile && validEmail && validLandline && validWebsite && validAddress) {
-        if (onBtnId == "form-add-button") {
-            formAddButton()
-        }
-        else if (onBtnId == "form-update-button") {
-            onUpdateContact()
-        }
+        addAndEditButton()
     }
 }
 
@@ -25,57 +21,59 @@ function inputValidations(id, value) {
         inputId = event.target.id;
         inputValue = event.target.value;
     }
-    isvalidInput = true
+    //console.log(event,inputId,inputValue)
+    let isvalidInput = true
     switch (inputId) {
         case "name":
             const nameRegex = /^[a-zA-Z]+$/
             if (inputValue.length == 0) {
                 $("#name-errmsg").html("*Name is required")
-                isvalidInput =  false;
+                isvalidInput = false;
             }
             else if (!nameRegex.test(inputValue)) {
                 $(`#name-errmsg`).html("*Enter a Valid Name");
-                isvalidInput =  false
+                isvalidInput = false
             }
             break;
         case "email":
             const emailRegex = /^\w+@[a-zA-Z_]+\.[a-zA-Z]{2,3}$/
             if (inputValue.length == 0) {
-                isvalidInput =  false;
+                isvalidInput = false;
             }
             else if (!emailRegex.test(inputValue)) {
                 $("#email-errmsg").html("*Enter a Valid Email")
-                isvalidInput =  false;
+                isvalidInput = false;
             }
             break;
         case "mobile":
+            const mobileRegex = /^[0-9]{10}?$/
             if (inputValue.length == 0) {
                 $("#mobile-errmsg").html("*Mobile Number is required")
-                isvalidInput =  false;
+                isvalidInput = false;
             }
-            else if (inputValue.length != 10) {
+            else if (!mobileRegex.test(inputValue)) {
                 $("#mobile-errmsg").html("*Enter a valid Mobile Number");
-                isvalidInput =  false;
+                isvalidInput = false;
             }
             break;
         case "landline":
             if (inputValue.length == 0) {
-                isvalidInput =  false;
+                isvalidInput = false;
             }
             break;
         case "website":
             const websiteRegex = /\bhttps?:/
             if (inputValue.length == 0) {
-                isvalidInput =  false;
+                isvalidInput = false;
             }
             else if (!websiteRegex.test(inputValue)) {
                 $("#website-errmsg").html("Enter a Valid URL")
-                isvalidInput =  false;
+                isvalidInput = false;
             }
             break;
         case "address":
             if (inputValue.length == 0) {
-                isvalidInput =  false;
+                isvalidInput = false;
             }
             break;
 
@@ -91,8 +89,9 @@ function toDeleteContact() {
     $("#show-contact-details-container").hide();
     $('#contacts-list li').removeClass("contacts-list-selected-items")
     let deleteUpdatedAddressBook = myServices.deleteContact(activeContact.id);
-    $("#contacts-list").html("")
-    deleteUpdatedAddressBook.map(createAndAppendAddrress)
+    $(`#${activeContact.id}`).remove();
+    //$("#contacts-list").html("")
+    //deleteUpdatedAddressBook.map(createAndAppendAddrress)
 }
 function closeForm() {
     $("#add-address-form-container").hide();
@@ -121,54 +120,86 @@ function onAddNavbar() {
     $("#add-address-form-container").show();
     $('#contacts-list li').removeClass("contacts-list-selected-items")
     //console.log(getSpecificObject())
+    onEditAdd = false
 }
 function onHomeNavbar() {
     $("#show-contact-details-container").hide()
     $('#contacts-list li').removeClass("contacts-list-selected-items")
     $("#add-address-form-container").hide();
 }
-function onUpdateContact() {
-    //let editedAddressBook = updateContact(updatedContact)
-    let updatedContact = {
-        id: activeContact.id,
-        name: $("#name").val(),
-        email: $("#email").val(),
-        mobile: $("#mobile").val(),
-        landline: $("#landline").val(),
-        website: $("#website").val(),
-        address: $("#address").val(),
+function addAndEditButton() {
+    //console.log(onEditAdd)
+    if (fromEditAdd) {
+        let updatedContact = {
+            id: activeContact.id,
+            name: $("#name").val(),
+            email: $("#email").val(),
+            mobile: $("#mobile").val(),
+            landline: $("#landline").val(),
+            website: $("#website").val(),
+            address: $("#address").val(),
+        }
+        myServices.updateContact(updatedContact)
+        $(`#${activeContact.id}`).html(`<h2>${updatedContact.name}</h2><p>${updatedContact.email}</p><p>+91 ${updatedContact.mobile}</p>`)
+        //$("#add-address-form-container").hide();
+        //$("#contacts-list").html("");
+        //editedAddressBook.map(createAndAppendAddrress)
+    } else {
+        $("#show-contact-details-container").show();
+        let newAddressToAdd = {
+            id: new Date().getTime(),
+            name: $("#name").val(),
+            email: $("#email").val(),
+            mobile: $("#mobile").val(),
+            landline: $("#landline").val(),
+            website: $("#website").val(),
+            address: $("#address").val()
+        }
+        myServices.addContact(newAddressToAdd);
+        createAndAppendAddrress(newAddressToAdd)
+        toBlankInputs()
+        //$("#add-address-form-container").hide();
+        $("#show-contact-details-container").hide();
     }
-    let editedAddressBook = myServices.updateContact(updatedContact)
     $("#add-address-form-container").hide();
-    $("#contacts-list").html("");
-    editedAddressBook.map(createAndAppendAddrress)
+    $('#contacts-list li').removeClass("contacts-list-selected-items")
 }
-function formAddButton() {
-    $("#show-contact-details-container").show();
-    let newName = $("#name").val();
-    let newEmail = $("#email").val();
-    let newMobile = $("#mobile").val();
-    let newLandline = $("#landline").val();
-    let newWebsite = $("#website").val();
-    let newAddress = $("#address").val();
-    let newAddressToAdd = {
-        id: new Date().getTime(),
-        name: newName,
-        email: newEmail,
-        mobile: newMobile,
-        landline: newLandline,
-        website: newWebsite,
-        address: newAddress
-    }
-    myServices.addContact(newAddressToAdd);
-    createAndAppendAddrress(newAddressToAdd)
-    toBlankInputs()
-    $("#add-address-form-container").hide();
-    $("#show-contact-details-container").hide();
-}
+// function onUpdateContact() {
+//     //console.log(onEditAdd)
+//     let updatedContact = {
+//         id: activeContact.id,
+//         name: $("#name").val(),
+//         email: $("#email").val(),
+//         mobile: $("#mobile").val(),
+//         landline: $("#landline").val(),
+//         website: $("#website").val(),
+//         address: $("#address").val(),
+//     }
+//     let editedAddressBook = myServices.updateContact(updatedContact)
+//     //$("#add-address-form-container").hide();
+//     $("#contacts-list").html("");
+//     editedAddressBook.map(createAndAppendAddrress)
+// }
+// function formAddButton() {
+//     //console.log(onEditAdd)
+//     $("#show-contact-details-container").show();
+//     let newAddressToAdd = {
+//         id: new Date().getTime(),
+//         name: $("#name").val(),
+//         email: $("#email").val(),
+//         mobile: $("#mobile").val(),
+//         landline: $("#landline").val(),
+//         website: $("#website").val(),
+//         address: $("#address").val()
+//     }
+//     myServices.addContact(newAddressToAdd);
+//     createAndAppendAddrress(newAddressToAdd)
+//     toBlankInputs()
+//     //$("#add-address-form-container").hide();
+//     $("#show-contact-details-container").hide();
+// }
 
 function onEdit() {
-    $("#form-add-button").hide();
     $("#form-update-button").show();
     $("#show-contact-details-container").hide();
     $("#add-address-form-container").show();
@@ -178,6 +209,7 @@ function onEdit() {
     $("#landline").val(activeContact.landline);
     $("#website").val(activeContact.website);
     $("#address").val(activeContact.address);
+    fromEditAdd = true
 }
 $(document).ready(function () {
     $("#show-contact-details-container").hide()
