@@ -2,12 +2,8 @@ class Services {
     getAddressBookFromLocalStorage() {
         let stringifiedAddressBook = localStorage.getItem("addressBook");
         let parsedAddressBook = JSON.parse(stringifiedAddressBook);
-        if (parsedAddressBook === null) {
-            return [];
-        } else {
-            return parsedAddressBook;
-        }
-    } 
+        return parsedAddressBook ? parsedAddressBook : []
+    }
     getSpecificObject(id) {
         let addressBook = this.getAddressBookFromLocalStorage();
         let getSpecificContact = addressBook.filter(function (address) {
@@ -23,24 +19,19 @@ class Services {
         localStorage.setItem("addressBook", JSON.stringify(deleteUpdatedAddressBook));
         return deleteUpdatedAddressBook
     }
-    addContact(contact) {
+    addOrUpdateContact(contact) {
         let addressBook = this.getAddressBookFromLocalStorage();
-        addressBook.push(contact)
-        localStorage.setItem("addressBook", JSON.stringify(addressBook));
-    }
-    updateContact(contact) {
-        let addressBook = this.getAddressBookFromLocalStorage();
-        let editedAddressBook = addressBook.map(function (address) {
-            if (address.id == contact.id) {
-                return contact
-            }
-            return address
+        let contactInList = addressBook.filter(function (address) {
+            return address.id == contact.id
         })
-        localStorage.setItem("addressBook", JSON.stringify(editedAddressBook));
-        return true
+        if (contactInList.length === 0) {
+            addressBook.push(contact)
+            localStorage.setItem("addressBook", JSON.stringify(addressBook));
+        } else {
+            let editedAddressBook = addressBook.map(function (address) {
+                return address.id == contact.id ? contact : address
+            })
+            localStorage.setItem("addressBook", JSON.stringify(editedAddressBook));
+        }
     }
-}
-let t = `!`;
-if (t){
-    console.log("yes")
 }

@@ -1,6 +1,6 @@
 const myServices = new Services();
 var activeContact;
-var fromEditAdd = false;
+var fromEditAdd;
 function onAddValidateInputs() {
     let onBtnId = event.target.id;
     let validName = inputValidations("name", $("#name").val());
@@ -21,7 +21,6 @@ function inputValidations(id, value) {
         inputId = event.target.id;
         inputValue = event.target.value;
     }
-    //console.log(event,inputId,inputValue)
     let isvalidInput = true
     switch (inputId) {
         case "name":
@@ -128,7 +127,6 @@ function onHomeNavbar() {
     $("#add-address-form-container").hide();
 }
 function addAndEditButton() {
-    //console.log(onEditAdd)
     if (fromEditAdd) {
         let updatedContact = {
             id: activeContact.id,
@@ -139,11 +137,8 @@ function addAndEditButton() {
             website: $("#website").val(),
             address: $("#address").val(),
         }
-        myServices.updateContact(updatedContact)
+        myServices.addOrUpdateContact(updatedContact)
         $(`#${activeContact.id}`).html(`<h2>${updatedContact.name}</h2><p>${updatedContact.email}</p><p>+91 ${updatedContact.mobile}</p>`)
-        //$("#add-address-form-container").hide();
-        //$("#contacts-list").html("");
-        //editedAddressBook.map(createAndAppendAddrress)
     } else {
         $("#show-contact-details-container").show();
         let newAddressToAdd = {
@@ -155,50 +150,14 @@ function addAndEditButton() {
             website: $("#website").val(),
             address: $("#address").val()
         }
-        myServices.addContact(newAddressToAdd);
+        myServices.addOrUpdateContact(newAddressToAdd);
         createAndAppendAddrress(newAddressToAdd)
         toBlankInputs()
-        //$("#add-address-form-container").hide();
         $("#show-contact-details-container").hide();
     }
     $("#add-address-form-container").hide();
     $('#contacts-list li').removeClass("contacts-list-selected-items")
 }
-// function onUpdateContact() {
-//     //console.log(onEditAdd)
-//     let updatedContact = {
-//         id: activeContact.id,
-//         name: $("#name").val(),
-//         email: $("#email").val(),
-//         mobile: $("#mobile").val(),
-//         landline: $("#landline").val(),
-//         website: $("#website").val(),
-//         address: $("#address").val(),
-//     }
-//     let editedAddressBook = myServices.updateContact(updatedContact)
-//     //$("#add-address-form-container").hide();
-//     $("#contacts-list").html("");
-//     editedAddressBook.map(createAndAppendAddrress)
-// }
-// function formAddButton() {
-//     //console.log(onEditAdd)
-//     $("#show-contact-details-container").show();
-//     let newAddressToAdd = {
-//         id: new Date().getTime(),
-//         name: $("#name").val(),
-//         email: $("#email").val(),
-//         mobile: $("#mobile").val(),
-//         landline: $("#landline").val(),
-//         website: $("#website").val(),
-//         address: $("#address").val()
-//     }
-//     myServices.addContact(newAddressToAdd);
-//     createAndAppendAddrress(newAddressToAdd)
-//     toBlankInputs()
-//     //$("#add-address-form-container").hide();
-//     $("#show-contact-details-container").hide();
-// }
-
 function onEdit() {
     $("#form-update-button").show();
     $("#show-contact-details-container").hide();
