@@ -61,7 +61,7 @@ function inputValidations(id, value) {
             }
             break;
         case "website":
-            const websiteRegex = /\bhttps?:/
+            const websiteRegex = /^https?:\/{2}\w+\.[a-zA-Z]{2,3}$/
             if (inputValue.length == 0) {
                 isvalidInput = false;
             }
